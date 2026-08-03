@@ -1,0 +1,44 @@
+name: Buscador Diário de Editais de TI
+
+on:
+  schedule:
+    # Roda diariamente às 09:00 BRT (12:00 UTC)
+    - cron: '0 12 * * *'
+  workflow_dispatch: # Permite rodar manualmente no botão do GitHub
+
+jobs:
+  run-search:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Executar Buscador e Notificador
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          NOTIFY_EMAIL: ${{ secrets.NOTIFY_EMAIL }}
+        run: |
+          python main.py
+
+      - name: Persistir histórico do banco de dados no Git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add editais.db
+          git commit -m "auto: atualiza histórico de editais vistos [skip ci]" || echo "Nenhuma alteração no banco de dados."
+          git push
