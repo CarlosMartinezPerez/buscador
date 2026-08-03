@@ -5,8 +5,9 @@ on:
     # Roda diariamente às 09:00 BRT (12:00 UTC)
     - cron: '0 12 * * *'
   workflow_dispatch: # Permite rodar manualmente no botão do GitHub
-  permissions:
-    contents: write
+
+permissions:
+  contents: write
 
 jobs:
   run-search:
