@@ -50,8 +50,10 @@ Retorne estritamente um JSON de acordo com o esquema."""
             if response.text:
                 data = json.loads(response.text)
                 return EditalEvaluation(**data)
-        except Exception:
-            continue
-            
-    print(f"[FilterAI] Falha ao analisar URL {url} com os modelos do Gemini.")
-    return None
+        except Exception as e:
+            print(f"\nModelo {model_name} falhou:")
+            print(type(e).__name__)
+            print(e)
+            continue    
+            print(f"[FilterAI] Falha ao analisar URL {url} com os modelos do Gemini.")
+            return None
