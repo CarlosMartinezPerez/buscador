@@ -65,4 +65,4 @@ python main.py --test-email
    * `SMTP_USER`
    * `SMTP_PASSWORD`
    * `NOTIFY_EMAIL`
-5. Pronto! O GitHub Actions irá rodar o script automaticamente **todos os dias às 09:00 da manhã** (horário de Brasília).
+5. Pronto! O GitHub Actions irá rodar o script automaticamente **todos os dias às 08:11 da manhã, aproximadamente, dependendo da carga do provedor** (horário de Brasília).
